@@ -1,0 +1,23 @@
+version: "3.4"
+services:
+  app:
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 1s
+      update_config:
+        parallelism: 1
+        delay: 10s
+        monitor: 10s
+    env_file:
+      - simple-01.env
+    image: hugocortes/simple-01:latest
+    networks:
+      - app-simple-01-net
+      - service-kong-net
+networks:
+  app-simple-01-net:
+    external: true
+  service-kong-net:
+    external: true
