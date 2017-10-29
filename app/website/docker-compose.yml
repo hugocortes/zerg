@@ -1,0 +1,28 @@
+version: "3.4"
+services:
+  app:
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 1s
+      update_config:
+        parallelism: 1
+        delay: 10s
+        monitor: 10s
+    env_file:
+      - website.env
+    secrets:
+      - mysql-root-password
+    image: hugocortes/website:latest
+    networks:
+      - app-website-net
+      - service-kong-net
+networks:
+  app-website-net:
+    external: true
+  service-kong-net:
+    external: true
+secrets:
+  mysql-root-password:
+    external: true
